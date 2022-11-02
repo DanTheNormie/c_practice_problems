@@ -30,19 +30,19 @@ int max_sum_subarray(int arr[],int len){
     
     if(sum_i_j < sum_i_l){
       
-      j = l; 
+        j = l; 
       
-      sum_i_j = sum_i_l;
+        sum_i_j = sum_i_l;
 
-      while(k <= l){
+        while(k <= l){
       
-        if(sum(arr,k,l) > sum_i_l){
-        
-          i = k; 
-        
+            if(sum(arr,k,l) > sum_i_l){
+            
+            i = k; 
+            
+            }
+            k++; 
         }
-        k++; 
-      }
     }
   }
   

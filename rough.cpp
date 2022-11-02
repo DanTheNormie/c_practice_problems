@@ -1,64 +1,38 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <string>
+#include <sstream>
 
 using namespace std;
 
-void selection_sort(int arr[], int length){
+string serialize_arr(int arr[],int length){
+    ostringstream oss;
 
-    for(int i=0; i<length ; i++){
+    std::string st = R"({"kind": {"grid": True},"rows": [{"columns": [{"content":")";
+    std::string st2 =R"(, "tag": )";
+    std::string st3 = R"(],}],})";
 
-        int min_value_index = i;
+    oss<<st<<arr[0]<<st2<<0<<st3;
 
-        
-        for(int i = i+1; i < length; i++){
-            if(arr[i] < arr[min_value_index]){
-                min_value_index = i;
-            }
-        }
-        swap(arr[i], arr[min_value_index]);
-    }
+    return oss.str();
 }
 
-void insertion_sort(int arr[], int length){
+int main()
+{
+    int aloha = 10;
+    
+    int arr[] = {0,1,2,3};
 
-    for(int i=1; i<length; i++){
-        for(int j=i-1; j > -1; j--){
-            if(arr[j] > arr[j+1]){
-                swap(arr[j],arr[j+1]);
-            }
-            else{
-                break;
-            }
-        }
-    }
-}
+    std::string visualize = "{\
+        \"kind\":{ \"plotly\": true },\
+        \"data\":[\
+            { \"y\": [1, 2, 4, 8, 16] },\
+            { \"y\": [14, 3, 0, 15, 10] }\
+        ]\
+    }";
 
-void print_array(int arr[], int length){
-    cout<<"--------- array start ----------"<<endl;
-    for(int i = 0; i<length; i++){
-        cout<<"["<<i<<"] "<<arr[i]<<endl;
-    }
-    cout<<"---------- array end -----------"<<endl<<endl;
-}
-
-
-int main(){
-
-   
-    int arr[] = {1,8,5,-31,42};
-    int length = sizeof(arr)/sizeof(arr[0]);
-
-    insertion_sort(arr,length);
-    print_array(arr,length);
-
-
-    /*
-    int a = 5, b = 10;
-    cout<<"a = "<<a<<endl;
-    cout<<"b = "<<b<<endl;
-    cout<<((a&&b))<<endl;
-    cout<<"a = "<<a<<endl;
-    cout<<"b = "<<b<<endl;
-    */
-    return 0;
+     string noice = serialize_arr(arr,4);
+    //(char[74])*noice._M_dataplus._M_p
+    arr[0] = 4;
 
 }
