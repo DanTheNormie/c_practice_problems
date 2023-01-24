@@ -98,7 +98,22 @@
 			"xstring": "cpp",
 			"xtr1common": "cpp",
 			"xtree": "cpp",
-			"xutility": "cpp"
+			"xutility": "cpp",
+			"barrier": "cpp",
+			"latch": "cpp",
+			"semaphore": "cpp",
+			"any": "cpp",
+			"*.tcc": "cpp",
+			"coroutine": "cpp",
+			"memory_resource": "cpp",
+			"source_location": "cpp",
+			"string_view": "cpp",
+			"numbers": "cpp",
+			"ranges": "cpp",
+			"span": "cpp",
+			"syncstream": "cpp",
+			"variant": "cpp",
+			"12-14": "cpp"
 		}
 	}
 }

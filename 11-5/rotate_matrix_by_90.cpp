@@ -101,6 +101,103 @@ void print_2d_array(int* arr,int rows, int columns){
     _setmode(_fileno(stdout), _O_TEXT);
 }
 
+void print_vector(vector<vector<int>> v){
+     /* The mystery lies here */
+    _setmode(_fileno(stdout), _O_U16TEXT);
+    
+    int spacing = 1;
+
+    for(int i=0; i<v.size(); i++){
+        for(int j=0; j<v[i].size(); j++){
+            int num = v[i][j];
+            int decimal_places = 1;
+            while(num/10 > 0){
+                num /= 10;
+                decimal_places ++;
+                if(decimal_places > spacing){
+                    spacing = decimal_places;
+                }
+            }
+        }
+    }
+
+    //wcout<<"spacing = "<<spacing<<endl;
+
+    /* print column headers */
+    wcout<<"   ";
+    for(int j=1;j<spacing;j++){
+            wcout<<" ";
+        }
+    for (int i = 0; i < v[0].size(); i++)
+    {
+        
+        wcout<<L"\u2502"<<"["<<i<<"]";
+
+        for(int j=1;j<spacing;j++){
+            wcout<<" ";
+        }
+    }
+    wcout<<L"\u2502";
+    wcout<<endl;
+
+
+    /* for each row, print [row] and row elements */
+
+    for(int i=0;i<v.size();i++){
+        
+        /* line above [row] and row elements */
+        for(int k=0; k<v[i].size()+1; k++){
+            for(int l=0; l<3+spacing-1; l++){
+                wcout<<L"\u2500";
+            }
+            wcout<<L"\u253c";
+        }
+        wcout<<L"\u2500";
+        wcout<<endl;
+
+        /* print[row] and row elements */
+        
+        for(int j=1;j<spacing;j++){
+            wcout<<" ";
+        }
+        wcout<<"["<<i<<"]";
+
+        for(int j=0; j<v[i].size();j++){
+
+            wcout<<L"\u2502"<<" ";
+
+            int num = v[i][j];
+
+            wcout<<num;
+
+            int decimal_places = 0;
+            while(num/10 > 0){
+                num /= 10;
+                decimal_places ++;
+            }
+
+            for(int j=1;j<=spacing-decimal_places;j++){
+                wcout<<" ";
+            }
+        }
+        wcout<<L"\u2502";
+        wcout<<endl;
+    }
+
+    /* print end line for posterity */
+    
+    for(int k=0; k<v[v.size()-1].size()+1; k++){
+        for(int l=0; l<3+spacing-1; l++){
+            wcout<<L"\u2500";
+        }
+        wcout<<L"\u253c";
+    }
+    wcout<<L"\u2500";
+    wcout<<endl<<endl;
+
+    _setmode(_fileno(stdout), _O_TEXT);
+}
+
 void MATRIX_DEREFERENCE(int* arr, int row, int col){
 
     /*  
@@ -155,33 +252,63 @@ void rotate_matrix_anitclockwise(int* arr, int row, int col){
 
 }
 
-void rotate_matrix_clockwise(int* arr, int row, int col){
+void rotate_matrix_clockwise(int arr[4][4], int row, int col){
 
     
     print_2d_array((int*)arr,row,col);
+
     for(int i=0; i<col; i++){
         int p1 = i, p2 = (row*(col-1))+i;
         while(p1<p2){
-            swap(*(arr+p1),*(arr+p2));
+            swap(arr[i][p1],arr[i][p2]);
             p1 += col;
             p2 -= col;
         }
         
     }
+    print_2d_array((int*)arr,row,col);
 
     for(int i=0; i<row; i++){
         for(int j=0; j<i; j++){
-            swap(*(arr+i*col+j),*(arr+j*col+i));
+            swap(arr[i][j],arr[j][i]);
         }
     }
 
     print_2d_array((int*)arr,row,col);
+    
 }
+
+
+ void rotate_matrix_clockwise_vector(vector<vector<int>> v){
+
+    print_vector(v);
+
+    for(int i=0;i<v.size();i++){
+        int p1=0,p2 = v[i].size()-1;
+        while(p1<p2){
+            swap(v[i][p1],v[i][p2]);
+            p1++;
+            p2--;
+        }
+    }
+
+    print_vector(v);
+
+    for(int i=0; i<v.size(); i++){
+        for(int j=0; j<i; j++){
+            swap(v[i][j],v[j][i]);
+        }
+    }
+    print_vector(v);
+} 
+
+
+
 int main(){
     int row=4,col=4;
-    int arr[row][col] ={{0,1,2,3},{4,5,6,7},{8,9,10,11},{12,13,14,15}};
+    int arr[4][4] ={{0,1,2,3},{4,5,6,7},{8,9,10,11},{12,13,14,15}};
+    vector<vector<int>> vec{{0,1,2,3},{4,5,6,7},{8,9,10,11},{12,13,14,15}};
     
-    rotate_matrix_clockwise((int*)arr,row,col);
-
+    rotate_matrix_clockwise_vector(vec);
     return 0;
 }

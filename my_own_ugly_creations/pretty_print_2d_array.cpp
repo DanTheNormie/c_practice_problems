@@ -103,42 +103,104 @@ void print_2d_array(int* arr,int rows, int columns){
     _setmode(_fileno(stdout), _O_TEXT);
 }
 
- void sum_of_row(int* arr, int rows, int columns){
-    int res[columns] = {0};
+void print_2d_array(vector<vector<int>> &arr){
+    int rows = arr.size();
+    int columns = arr[0].size();
 
-    int sum;
-    for(int i =0; i < rows; i++ ){
-        sum = 0;
+    /* The mystery lies here */
+    _setmode(_fileno(stdout), _O_U16TEXT);
+
+    int spacing = 1;
+    int max = INT_MIN;
+    /*find max*/
+    for(int i=0; i<rows; i++){
         for(int j=0; j<columns; j++){
-            sum += *((arr+i*columns)+j);
+            int num = *((arr+i*columns)+j);
+            if(num > max){
+                max = num;
+            }
         }
-        res[i] = sum;
     }
 
-    print_2d_array(res,1,columns);
+    /*find decimal_place of max and set spacing*/
+    while(max/10 > 0){
+        max /= 10;
+        spacing ++;
+    }
 
-} 
+    //wcout<<"spacing = "<<spacing<<endl;
+
+    /* print column headers */
+    wcout<<"   ";
+    for(int j=1;j<spacing;j++){
+            wcout<<" ";
+        }
+    for (int i = 0; i < columns; i++)
+    {
+        
+        wcout<<L"\u2502"<<"["<<i<<"]";
+
+        for(int j=1;j<spacing;j++){
+            wcout<<" ";
+        }
+    }
+    wcout<<L"\u2502";
+    wcout<<endl;
 
 
-int main(){
+    /* for each row, print [row] and row elements */
 
-    
-       /*  int row, col;
-        cin>>row>>col;
-
-        int arr[row][col];
-        for(int i=0; i<row;i++){
-            for (int j = 0; j < col; j++){
-                cin>>arr[i][j];
+    for(int i=0;i<rows;i++){
+        
+        /* line above [row] and row elements */
+        for(int k=0; k<columns+1; k++){
+            for(int l=0; l<3+spacing-1; l++){
+                wcout<<L"\u2500";
             }
-        } 
-     */
+            wcout<<L"\u253c";
+        }
+        wcout<<L"\u2500";
+        wcout<<endl;
 
+        /* print[row] and row elements */
+        
+        for(int j=1;j<spacing;j++){
+            wcout<<" ";
+        }
+        wcout<<"["<<i<<"]";
 
-    int row=3,col=3;
-    int arr[row][col] = {{1,2,3},{4,5,6},{7,8,9}};
+        for(int j=0; j<columns;j++){
 
-    sum_of_row((int*)arr,row,col);
+            wcout<<L"\u2502"<<" ";
 
-    return 0;
+            int num = *((arr+i*columns)+j);
+
+            wcout<<num;
+
+            int decimal_places = 0;
+            while(num/10 > 0){
+                num /= 10;
+                decimal_places ++;
+            }
+
+            for(int j=1;j<=spacing-decimal_places;j++){
+                wcout<<" ";
+            }
+        }
+        wcout<<L"\u2502";
+        wcout<<endl;
+    }
+
+    /* print end line for posterity */
+    
+    for(int k=0; k<columns+1; k++){
+        for(int l=0; l<3+spacing-1; l++){
+            wcout<<L"\u2500";
+        }
+        wcout<<L"\u253c";
+    }
+    wcout<<L"\u2500";
+    wcout<<endl<<endl;
+
+    _setmode(_fileno(stdout), _O_TEXT);
 }

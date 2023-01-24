@@ -170,10 +170,10 @@ void product_except_self_naive(int arr[], int len){
 
 int main(){
 
-    int arr[] = {1,2,3,4,5,0};
+    int arr[] = {1,2,3,4,5,6};
     int len = sizeof(arr)/sizeof(arr[0]);
     
-    product_except_self_best(arr,len);
+    product_except_self_optimized(arr,len);
 
     return 0;
 }

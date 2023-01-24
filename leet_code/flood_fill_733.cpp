@@ -3,7 +3,10 @@
 #include <fcntl.h>
 using namespace std;
 
-void print_2d_array(int* arr,int rows, int columns){
+
+void print_2d_array(vector<vector<int>> &arr){
+    int rows = arr.size();
+    int columns = arr[0].size();
 
     /* The mystery lies here */
     _setmode(_fileno(stdout), _O_U16TEXT);
@@ -13,7 +16,7 @@ void print_2d_array(int* arr,int rows, int columns){
     /*find max*/
     for(int i=0; i<rows; i++){
         for(int j=0; j<columns; j++){
-            int num = *((arr+i*columns)+j);
+            int num = arr[i][j];
             if(num > max){
                 max = num;
             }
@@ -71,7 +74,7 @@ void print_2d_array(int* arr,int rows, int columns){
 
             wcout<<L"\u2502"<<" ";
 
-            int num = *((arr+i*columns)+j);
+            int num = arr[i][j];
 
             wcout<<num;
 
@@ -103,42 +106,37 @@ void print_2d_array(int* arr,int rows, int columns){
     _setmode(_fileno(stdout), _O_TEXT);
 }
 
- void sum_of_row(int* arr, int rows, int columns){
-    int res[columns] = {0};
 
-    int sum;
-    for(int i =0; i < rows; i++ ){
-        sum = 0;
-        for(int j=0; j<columns; j++){
-            sum += *((arr+i*columns)+j);
-        }
-        res[i] = sum;
-    }
+void flood_fill(vector<vector<int>> &image, int x, int y, int og_color, int color)
+{
+    if (x <= -1 || x >= image.size())
+        return;
+    if (y <= -1 || y >= image[x].size())
+        return;
+    if (image[x][y] != og_color)
+        return;
+    if (image[x][y] == color) return;
 
-    print_2d_array(res,1,columns);
+    image[x][y] = color;
+    flood_fill(image, x + 1, y, og_color, color);
+    flood_fill(image, x, y + 1, og_color, color);
+    flood_fill(image, x - 1, y, og_color, color);
+    flood_fill(image, x, y - 1, og_color, color);
+}
 
-} 
+vector<vector<int>> floodFill(vector<vector<int>> &image, int x, int y, int color)
+{
+    flood_fill(image, x, y, image[x][y], color);
 
+    return image;
+}
 
 int main(){
-
-    
-       /*  int row, col;
-        cin>>row>>col;
-
-        int arr[row][col];
-        for(int i=0; i<row;i++){
-            for (int j = 0; j < col; j++){
-                cin>>arr[i][j];
-            }
-        } 
-     */
-
-
-    int row=3,col=3;
-    int arr[row][col] = {{1,2,3},{4,5,6},{7,8,9}};
-
-    sum_of_row((int*)arr,row,col);
-
-    return 0;
+    vector<vector<int>> v{
+        {1,1,1},
+        {1,1,0},
+        {1,0,1}
+    };
+    floodFill(v,1,1,2);
+    print_2d_array(v);
 }
